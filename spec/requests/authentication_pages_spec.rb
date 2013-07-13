@@ -27,12 +27,8 @@ describe "Authentication" do
     
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
-      before do
-        fill_in "Email",    with: user.email.upcase
-        fill_in "Password", with: user.password
-        click_button "Sign in"
-      end
-
+      before {sign_in(user)}
+      
       it { should have_selector('title', text: user.name) }
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Settings', href: edit_user_path(user)) }
@@ -50,6 +46,10 @@ describe "Authentication" do
   describe "authorization" do
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
+
+      it { should_not have_link('Profile', href: user_path(user)) }
+      it { should_not have_link('Settings', href: edit_user_path(user)) }
+
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
@@ -79,6 +79,18 @@ describe "Authentication" do
           it { should have_selector('title', text: 'Sign in') }
         end
       end
+      describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          before { post microposts_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
     end
     describe "as wrong user" do
       let(:user) { FactoryGirl.create(:user) }
@@ -104,5 +116,13 @@ describe "Authentication" do
         specify { response.should redirect_to(root_path) }
       end
     end
+  end
+  describe "accessible attributes" do
+    let(:user) { FactoryGirl.create(:user) }
+    it "should not allow access to user_id" do
+      expect do
+        user.update_attributes(:admin => true)
+      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end    
   end
 end
