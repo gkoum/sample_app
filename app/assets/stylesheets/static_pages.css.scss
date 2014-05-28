@@ -2,3 +2,19 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "bootstrap";
+
+.container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+  width: 100%;
+}
+
+ul, ol {
+    padding: 0px;
+    margin: 0px 20px 10px 25px;
+}
+.span4, .span8{
+    width: 300px;
+    margin-top: 50px;
+}

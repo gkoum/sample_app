@@ -57,6 +57,7 @@ p {
 #logo {
   float: left;
   margin-right: 10px;
+  margin-left: 100px;
   font-size: 1.4em;
   color:$grayLight;
   /*text-transform: uppercase;*/
@@ -76,13 +77,14 @@ footer {
   border-top: 1px solid $grayMediumLight;
   color: $grayLight;
   a {
-    color: $gray;
+    color: $grayMediumLight;
     &:hover { 
-      color: $grayDarker;
+      color: $grayLight;
     }
   }  
   small { 
-    float: left; 
+    float: left;
+    font-size: 15px; 
   }
   ul {
     float: right;
